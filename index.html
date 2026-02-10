@@ -1,515 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A/L Physics AI Tutor - Sri Lanka</title>
-    <style>
-        :root {
-            --primary: #1e3a8a; /* Deep Academic Blue */
-            --secondary: #f59e0b; /* Gold */
-            --accent: #3b82f6;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #1e293b;
-            --border: #cbd5e1;
-            --success: #10b981;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A/L Physics AI Tutor - Sri Lanka</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #0f172a);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    header h1 {
+      margin-bottom: 0.5rem;
+    }
 
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary), #0f172a);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
 
-        header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
+    .notice {
+      background: #fff7ed;
+      border: 1px solid #f59e0b;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
 
-        .subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
+    iframe {
+      width: 100%;
+      height: 900px;
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      background: white;
+    }
 
-        /* Main Container */
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            width: 100%;
-            flex: 1;
-        }
-
-        /* Input Section */
-        .input-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border);
-            margin-bottom: 2rem;
-        }
-
-        .lang-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-            justify-content: center;
-        }
-
-        .lang-btn {
-            padding: 8px 20px;
-            border: 2px solid var(--border);
-            background: white;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .lang-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            font-size: 1rem;
-            resize: vertical;
-            transition: border-color 0.3s;
-            font-family: inherit;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .hint {
-            font-size: 0.875rem;
-            color: #64748b;
-            margin-top: 0.5rem;
-        }
-
-        /* Solve Button */
-        .solve-btn {
-            width: 100%;
-            padding: 1rem;
-            margin-top: 1.5rem;
-            background: linear-gradient(135deg, var(--secondary), #d97706);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .solve-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3);
-        }
-
-        .solve-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Results Section */
-        .result-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border);
-            display: none;
-            animation: slideUp 0.5s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--bg);
-        }
-
-        .result-title {
-            font-size: 1.5rem;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .language-tag {
-            background: var(--bg);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .solution-content {
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        .solution-content h3 {
-            color: var(--primary);
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-            font-size: 1.2rem;
-        }
-
-        .solution-content p {
-            margin-bottom: 1rem;
-        }
-
-        .final-answer-box {
-            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-            border: 2px solid var(--success);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            text-align: center;
-        }
-
-        .final-answer-label {
-            font-size: 0.875rem;
-            color: #065f46;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        .final-answer-value {
-            font-size: 1.5rem;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .error-box {
-            background: #fee2e2;
-            border: 2px solid #ef4444;
-            color: #991b1b;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: #64748b;
-            font-size: 0.875rem;
-            border-top: 1px solid var(--border);
-            margin-top: 2rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 640px) {
-            header h1 { font-size: 1.5rem; }
-            .input-card, .result-card { padding: 1.5rem; }
-        }
-    </style>
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>🎓 A/L Physics AI Tutor</h1>
-        <div class="subtitle">Sri Lankan G.C.E. Advanced Level Physics Assistant</div>
-        <div class="subtitle" style="font-size: 0.9rem; margin-top: 5px; opacity: 0.8;">
-            උසස් පෙළ භෞතික විද්‍යා AI උපදේශක
-        </div>
-    </header>
+<header>
+  <h1>🎓 A/L Physics AI Tutor</h1>
+  <p>Sri Lankan G.C.E. Advanced Level Physics Assistant</p>
+  <p style="opacity:0.85;">උසස් පෙළ භෞතික විද්‍යා AI උපදේශක</p>
+</header>
 
-    <div class="container">
-        
-        <!-- Input Section -->
-        <div class="input-card">
-            <div class="lang-selector">
-                <button class="lang-btn active" onclick="setLang('en')" id="btn-en">English</button>
-                <button class="lang-btn" onclick="setLang('si')" id="btn-si">සිංහල</button>
-                <button class="lang-btn" onclick="setLang('both')" id="btn-both">English + සිංහල</button>
-            </div>
+<div class="container">
 
-            <label for="questionInput">
-                <span id="label-text">Enter your Physics Problem:</span>
-            </label>
-            
-            <textarea 
-                id="questionInput" 
-                placeholder="Example: A car starts from rest and accelerates at 2 m/s² for 10 seconds. Find the final velocity.&#10;&#10;උදාහරණය: මෝටර් රථයක් විවේකයෙන් ආරම්භ වී තත්පර 10 ක් තුළදී 2 m/s² ත්වරණයට ලක්වේ. අවසාන වේගය සොයන්න."
-            ></textarea>
-            
-            <div class="hint">
-                <span id="hint-text">
-                    Tip: Include all given values (numbers and units) for the best results. 
-                    You can type in Sinhala, English, or mix both.
-                </span>
-            </div>
+  <div class="notice">
+    ⚠️ <strong>Notice:</strong>  
+    This is a free AI service.  
+    First time loading may take 1–2 minutes.  
+    If no answer appears, please submit the question again.
+  </div>
 
-            <button class="solve-btn" onclick="solveProblem()" id="solveBtn">
-                <span class="spinner" id="spinner"></span>
-                <span id="btn-text">Solve Problem</span>
-            </button>
-        </div>
+  <iframe
+    src="https://kavind4543-al-physics-solver.hf.space"
+    loading="lazy">
+  </iframe>
 
-        <!-- Results Section -->
-        <div id="resultCard" class="result-card">
-            <div class="result-header">
-                <div class="result-title">Solution</div>
-                <div class="language-tag" id="outputLangTag">English</div>
-            </div>
-            
-            <div id="solutionContent" class="solution-content">
-                <!-- AI Response will be injected here -->
-            </div>
+</div>
 
-            <div class="final-answer-box" id="finalAnswerBox" style="display: none;">
-                <div class="final-answer-label">Final Answer / අවසාන පිළිතුර</div>
-                <div class="final-answer-value" id="finalAnswerValue">--</div>
-            </div>
-        </div>
+<footer>
+  © 2024 A/L Physics AI Tutor — Built for Sri Lankan Students 🇱🇰  
+  <br/>Powered by Hugging Face & GitHub Pages
+</footer>
 
-    </div>
-
-    <footer>
-        <p>© 2024 A/L Physics AI Tutor. Designed for Sri Lankan Students.</p>
-        <p style="margin-top: 5px; font-size: 0.8rem;">
-            Powered by AI | Runs on GitHub Pages
-        </p>
-    </footer>
-
-    <script>
-        // --- CONFIGURATION ---
-        // ⚠️ REPLACE THIS WITH YOUR CLOUDFLARE WORKER URL (See instructions below)
-        const API_PROXY_URL = 'https://your-worker.your-subdomain.workers.dev';
-        
-        let currentLang = 'en';
-
-        // --- UI FUNCTIONS ---
-
-        function setLang(lang) {
-            currentLang = lang;
-            
-            // Update buttons
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`btn-${lang}`).classList.add('active');
-            
-            // Update labels
-            const labelText = document.getElementById('label-text');
-            const hintText = document.getElementById('hint-text');
-            const btnText = document.getElementById('btn-text');
-            
-            if (lang === 'en') {
-                labelText.textContent = 'Enter your Physics Problem:';
-                hintText.textContent = 'Tip: Include all given values (numbers and units) for the best results. You can type in Sinhala, English, or mix both.';
-                btnText.textContent = 'Solve Problem';
-            } else if (lang === 'si') {
-                labelText.textContent = 'ඔබේ භෞතික විද්‍යා ගැටලුව ඇතුළත් කරන්න:';
-                hintText.textContent = 'ඉඟිය: හොඳම ප්‍රතිඵල සඳහා සියලුම දත්ත (අගයන් සහ ඒකක) ඇතුළත් කරන්න. ඔබට සිංහලෙන් හෝ ඉංග්‍රීසියෙන් ටයිප් කළ හැක.';
-                btnText.textContent = 'ගැටලුව විසඳන්න';
-            } else {
-                labelText.textContent = 'Enter your Physics Problem / ඔබේ භෞතික විද්‍යා ගැටලුව ඇතුළත් කරන්න:';
-                hintText.textContent = 'Include all values for best results / හොඳම ප්‍රතිඵල සඳහා සියලුම දත්ත ඇතුළත් කරන්න';
-                btnText.textContent = 'Solve / විසඳන්න';
-            }
-        }
-
-        async function solveProblem() {
-            const question = document.getElementById('questionInput').value.trim();
-            const solveBtn = document.getElementById('solveBtn');
-            const spinner = document.getElementById('spinner');
-            const resultCard = document.getElementById('resultCard');
-            const solutionContent = document.getElementById('solutionContent');
-            
-            if (!question) {
-                alert(currentLang === 'si' ? 'කරුණාකර ප්‍රශ්නයක් ඇතුළත් කරන්න' : 'Please enter a question');
-                return;
-            }
-
-            // UI Loading State
-            solveBtn.disabled = true;
-            spinner.style.display = 'block';
-            resultCard.style.display = 'none';
-
-            try {
-                // Prepare the prompt based on language preference
-                let systemPrompt = `You are an expert A/L Physics tutor for Sri Lankan students. 
-                Follow the Sri Lankan G.C.E. Advanced Level Physics syllabus (Mechanics, Waves, Electricity, Modern Physics).
-                
-                When solving problems:
-                1. Identify the given data (convert to SI units if necessary)
-                2. State the relevant physics principle/law
-                3. Write the formula used
-                4. Show step-by-step substitution and calculation
-                5. Provide the final answer with correct units
-                
-                Format your response clearly with HTML tags (<h3>, <p>, <ul>, <li>, <strong>).
-                Use LaTeX formatting for equations (e.g., $F = ma$) if possible, or clear text.`;
-
-                let userPrompt = question;
-
-                if (currentLang === 'si') {
-                    systemPrompt += ` Respond entirely in Sinhala language. Use proper physics terminology in Sinhala.`;
-                    userPrompt = question; // User input might be Sinhala already
-                } else if (currentLang === 'both') {
-                    systemPrompt += ` Provide the solution in BOTH English and Sinhala. Alternate between paragraphs or sections.`;
-                } else {
-                    systemPrompt += ` Respond in English.`;
-                }
-
-                // API Call to Proxy
-                const response = await fetch(API_PROXY_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        model: "gpt-3.5-turbo", // or gpt-4 if available
-                        messages: [
-                            { role: "system", content: systemPrompt },
-                            { role: "user", content: userPrompt }
-                        ],
-                        temperature: 0.3 // Lower temperature for more accurate physics
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('API request failed');
-                }
-
-                const data = await response.json();
-                const aiResponse = data.choices[0].message.content;
-
-                // Display Result
-                solutionContent.innerHTML = formatResponse(aiResponse);
-                
-                // Update language tag
-                const langTags = { en: 'English', si: 'සිංහල', both: 'Bilingual' };
-                document.getElementById('outputLangTag').textContent = langTags[currentLang];
-                
-                resultCard.style.display = 'block';
-                
-                // Scroll to result
-                resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            } catch (error) {
-                console.error('Error:', error);
-                solutionContent.innerHTML = `
-                    <div class="error-box">
-                        <strong>Error:</strong> Unable to connect to AI tutor.<br>
-                        Please check your internet connection or try again later.<br><br>
-                        <span style="font-size: 0.9rem;">
-                            Note: Make sure you have set up the Cloudflare Worker proxy correctly (see instructions).
-                        </span>
-                    </div>
-                `;
-                resultCard.style.display = 'block';
-            } finally {
-                solveBtn.disabled = false;
-                spinner.style.display = 'none';
-            }
-        }
-
-        function formatResponse(text) {
-            // Convert markdown-like formatting to HTML
-            // Handle headers
-            text = text.replace(/###\s*(.+)/g, '<h3>$1</h3>');
-            text = text.replace(/##\s*(.+)/g, '<h3>$1</h3>');
-            
-            // Handle bold
-            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-            
-            // Handle lists
-            text = text.replace(/^\s*-\s*(.+)/gm, '<li>$1</li>');
-            text = text.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
-            
-            // Handle line breaks
-            text = text.replace(/\n/g, '<br>');
-            
-            return text;
-        }
-
-        // Initialize
-        window.onload = () => {
-            // Check if proxy URL is still default
-            if (API_PROXY_URL.includes('your-worker')) {
-                console.warn('https://huggingface.co/spaces/kavind4543/al-physics-solver');
-            }
-        };
-    </script>
 </body>
-
 </html>
-<h2>Sri Lanka A/L Physics AI Solver</h2>
-
-<iframe
-  src="https://https://huggingface.co/spaces/kavind4543/al-physics-solver.hf.space"
-  width="100%"
-  height="850"
-  style="border:none; border-radius:12px;">
-</iframe>
